@@ -289,3 +289,5 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/vscode,java,macos,windows,linux,sublimetext,python,venv
+
+server/models/mnist*
