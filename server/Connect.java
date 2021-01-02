@@ -12,6 +12,11 @@ public class Connect {
   private BufferedReader in = null;
   private PrintWriter out = null;
 
+  /**
+   * constructor to establish a connection.
+   *
+   * @param port Port number.
+   */
   public Connect(int port) {
     this.port = port;
     this.createSocket();
@@ -20,6 +25,7 @@ public class Connect {
     this.out = outObj();
   }
 
+  /** Create socket. */
   private void createSocket() {
     try {
       ServerSocket serverSocket = new ServerSocket(this.port);
@@ -29,6 +35,11 @@ public class Connect {
     }
   }
 
+  /**
+   * Create buffer reader object.
+   *
+   * @return BufferedReader object.
+   */
   private BufferedReader inObj() {
     InputStreamReader streamReader = null;
 
@@ -40,6 +51,11 @@ public class Connect {
     return new BufferedReader(streamReader);
   }
 
+  /**
+   * Print writer object.
+   *
+   * @return PrintWriter object.
+   */
   private PrintWriter outObj() {
     PrintWriter printWriter = null;
 
@@ -51,10 +67,20 @@ public class Connect {
     return printWriter;
   }
 
+  /**
+   * Post text.
+   *
+   * @param text The string to send.
+   */
   public void postText(String text) {
     this.out.println(text);
   }
 
+  /**
+   * Get the text.
+   *
+   * @return Obtained character string.
+   */
   public String getText() {
     String text = null;
 
@@ -66,6 +92,7 @@ public class Connect {
     return text;
   }
 
+  /** Close socket and more. */
   public void close() {
     try {
       this.in.close();
