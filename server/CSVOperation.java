@@ -1,8 +1,10 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,23 +25,42 @@ public class CSVOperation {
   /**
    * Read CSV file.
    *
-   * @return csv.
+   * @return array of MarkovElement.
    */
-  public List<String> read() {
-    BufferedReader buffer = new BufferedReader(new FileReader(this.file));
+  public List<MarkovElement> read() {
+    List<MarkovElement> text = new ArrayList<MarkovElement>(10);
+    try {
+      BufferedReader buffer = new BufferedReader(new FileReader(this.file));
 
-    List<String> text = new ArrayList<String>(10);
+      String value1 = "";
+      String value2 = "";
+      boolean isStart = false;
+      boolean isEnd = false;
+      int count = 0;
 
-    String line = "";
-    while ((line = buffer.readLine()) != null) {
-      // StringTokenizer lineData = new StringTokenizer(line, ",");
+      String line = "";
+      while ((line = buffer.readLine()) != null) {
+        String[] lineData = line.split(",", -1);
 
-      // while (lineData.hasMoreTokens()) {}
+        if (lineData.length < 5) {
+          throw new Error("CSV data is wrong.");
+        }
 
-      text.add(line);
+        value1 = lineData[0];
+        value2 = lineData[1];
+        isStart = Boolean.valueOf(lineData[2]);
+        isEnd = Boolean.valueOf(lineData[3]);
+        count = Integer.parseInt(lineData[4]);
+
+        text.add(new MarkovElement(value1, value2, isStart, isEnd, count));
+      }
+
+      buffer.close();
+    } catch (FileNotFoundException error) {
+      error.printStackTrace();
+    } catch (IOException error) {
+      error.printStackTrace();
     }
-
-    buffer.close();
 
     return text;
   }
@@ -47,15 +68,19 @@ public class CSVOperation {
   /**
    * Write to csv.
    *
-   * @param text Text to write to CSV
+   * @param text class of MarkovElement to write to CSV
    */
-  public void write(String[] text) {
-    BufferedWriter buffer = new BufferedWriter(new FileWriter(this.file, true));
+  public void write(MarkovElement[] text) {
+    try {
+      BufferedWriter buffer = new BufferedWriter(new FileWriter(this.file, true));
 
-    for (int i = 0; text.length > i; ++i) {
-      buffer.write(text[i]);
-      buffer.newLine();
+      for (int i = 0; text.length > i; ++i) {
+        buffer.write(text[i].getCSV());
+        buffer.newLine();
+      }
+      buffer.close();
+    } catch (IOException error) {
+      error.printStackTrace();
     }
-    buffer.close();
   }
 }
