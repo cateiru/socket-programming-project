@@ -10,7 +10,11 @@ Socket Programming Project
 
 ## package
 
-- (Igo)(https://ja.osdn.net/projects/igo/downloads/55029/igo-0.4.5.jar/)
+- [Igo](https://ja.osdn.net/projects/igo/downloads/55029/igo-0.4.5.jar/)
+
+## 参考
+
+https://shironeko.hateblo.jp/entry/2016/11/14/201912
 ## License
 
 MIT

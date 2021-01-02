@@ -20,7 +20,7 @@ public class Connect {
     this.out = outObj();
   }
 
-  private createSocket() {
+  private void createSocket() {
     try {
       ServerSocket serverSocket = new ServerSocket(this.port);
       this.socket = serverSocket.accept();
@@ -30,25 +30,49 @@ public class Connect {
   }
 
   private BufferedReader inObj() {
-    InputStreamReader r = new InputStreamReader(this.socket.getInputStream());
-    return new BufferedReader(r);
+    InputStreamReader streamReader = null;
+
+    try {
+      streamReader = new InputStreamReader(this.socket.getInputStream());
+    } catch (IOException error) {
+      error.printStackTrace();
+    }
+    return new BufferedReader(streamReader);
   }
 
   private PrintWriter outObj() {
-    return new PrintWriter(this.socket.getOutputStream(), true);
+    PrintWriter printWriter = null;
+
+    try {
+      printWriter = new PrintWriter(this.socket.getOutputStream(), true);
+    } catch (IOException error) {
+      error.printStackTrace();
+    }
+    return printWriter;
   }
 
-  public postText(String text) {
+  public void postText(String text) {
     this.out.println(text);
   }
 
   public String getText() {
-    return this.in.readLine();
+    String text = null;
+
+    try {
+      text = this.in.readLine();
+    } catch (IOException error) {
+      error.printStackTrace();
+    }
+    return text;
   }
 
-  public close() {
-    this.in.close();
-    this.out.close();
-    this.socket.close();
+  public void close() {
+    try {
+      this.in.close();
+      this.out.close();
+      this.socket.close();
+    } catch (IOException error) {
+      this.close();
+    }
   }
 }
