@@ -15,6 +15,11 @@ public class MarkovChain {
     this.random = new Random();
   }
 
+  /**
+   * Add sentences to increase the models used for Markov chains.
+   *
+   * @param text The text to use.
+   */
   public void addElement(String text) {
     if (this.alreadyExists.indexOf(text) != -1) {
       return;
@@ -44,6 +49,11 @@ public class MarkovChain {
     }
   }
 
+  /**
+   * The text to use.
+   *
+   * @return generated text.
+   */
   public String generate() {
     List<MarkovElement> startElement = new ArrayList<MarkovElement>(1);
 
@@ -59,6 +69,11 @@ public class MarkovChain {
     return text;
   }
 
+  /**
+   * Generate sentences using recursion.
+   *
+   * @param useTexts Usable objects.
+   */
   private String recursionSentenceGeneration(List<MarkovElement> useTexts) {
     int useIndex = random.nextInt(useTexts.size());
     MarkovElement useText = useTexts.get(useIndex);
@@ -84,6 +99,7 @@ public class MarkovChain {
     return textBuffer.toString();
   }
 
+  /** Export trained data. */
   public void printData() {
     for (int i = 0; this.element.size() > i; ++i) {
       MarkovElement element = this.element.get(i);
