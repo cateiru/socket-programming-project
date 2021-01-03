@@ -16,7 +16,7 @@ public class MarkovChain {
   }
 
   /**
-   * Add sentences to increase the models used for Markov chains.
+   * Add sentences to increase the models used for Markov chains. Divide by clause.
    *
    * @param text The text to use.
    */
@@ -27,6 +27,30 @@ public class MarkovChain {
     this.alreadyExists.add(text);
 
     List<String> formattedText = analysis.analysis(text);
+    System.out.println(formattedText);
+
+    int start = 0;
+    boolean isPhrase = false;
+
+    for (int i = 0; formattedText.size() > i; ++i) {
+      if ("。".equals(formattedText.get(i))) {
+        this.add(formattedText.subList(start, i + 1));
+        start = i + 1;
+        isPhrase = true;
+      }
+    }
+
+    if (!isPhrase) {
+      this.add(formattedText);
+    }
+  }
+
+  /**
+   * Add sentences to increase the models used for Markov chains.
+   *
+   * @param formattedText A word-separated sentence.
+   */
+  private void add(List<String> formattedText) {
     int splitLength = formattedText.size();
 
     for (int i = 0; (splitLength - 1) > i; ++i) {
