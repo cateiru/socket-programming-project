@@ -1,22 +1,36 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MarkovChain {
   private WordSeparation analysis;
   private List<MarkovElement> element;
+  private List<String> alreadyExists;
+  private Random random;
 
   public MarkovChain() {
     this.analysis = new WordSeparation();
-    this.element = new ArrayList<MarkovElement>(10);
+    this.element = new ArrayList<MarkovElement>(1);
+    this.alreadyExists = new ArrayList<String>(1);
+    this.random = new Random();
   }
 
   public void addElement(String text) {
+    if (this.alreadyExists.indexOf(text) != -1) {
+      return;
+    }
+    this.alreadyExists.add(text);
+
     List<String> formattedText = analysis.analysis(text);
     int splitLength = formattedText.size();
 
     for (int i = 0; (splitLength - 1) > i; ++i) {
       String value1 = formattedText.get(i);
       String value2 = formattedText.get(i + 1);
+      String value3 = "";
+      if (i + 3 < splitLength) {
+        value3 = formattedText.get(i + 2);
+      }
       boolean isStart = false;
       boolean isEnd = false;
 
@@ -26,29 +40,54 @@ public class MarkovChain {
       if (i == (splitLength - 2)) {
         isEnd = true;
       }
-
-      // If the same element already exists, `count` is incremented.
-      int index = check(value1, value2);
-      if (index == -1) {
-        this.element.add(new MarkovElement(value1, value2, isStart, isEnd, 0));
-      } else {
-        MarkovElement addCountElement = this.element.get(index);
-        addCountElement.addCount();
-      }
+      this.element.add(new MarkovElement(value1, value2, value3, isStart, isEnd));
     }
-  }
-
-  private int check(String value1, String value2) {
-    for (int i = 0; this.element.size() > i; ++i) {
-      MarkovElement element = this.element.get(i);
-      if (element.checkDuplicate(value1, value2)) {
-        return i;
-      }
-    }
-    return -1;
   }
 
   public String generate() {
-    return "";
+    List<MarkovElement> startElement = new ArrayList<MarkovElement>(1);
+
+    for (int i = 0; this.element.size() > i; ++i) {
+      MarkovElement getElement = this.element.get(i);
+      if (getElement.getIsStart()) {
+        startElement.add(getElement);
+      }
+    }
+
+    String text = this.recursionSentenceGeneration(startElement);
+
+    return text;
+  }
+
+  private String recursionSentenceGeneration(List<MarkovElement> useTexts) {
+    int useIndex = random.nextInt(useTexts.size());
+    MarkovElement useText = useTexts.get(useIndex);
+    List<MarkovElement> nextElement = new ArrayList<MarkovElement>(1);
+
+    StringBuilder textBuffer = new StringBuilder();
+    textBuffer.append(useText.getString());
+
+    if (!useText.getIsEnd()) {
+      String nextText = useText.getValue3();
+      if (nextText == "") {
+        nextText = useText.getValue2();
+      }
+      for (int i = 0; this.element.size() > i; ++i) {
+        MarkovElement selectElement = this.element.get(i);
+        if (selectElement.checkValue1(nextText)) {
+          nextElement.add(selectElement);
+        }
+      }
+      textBuffer.append(this.recursionSentenceGeneration(nextElement));
+    }
+
+    return textBuffer.toString();
+  }
+
+  public void printData() {
+    for (int i = 0; this.element.size() > i; ++i) {
+      MarkovElement element = this.element.get(i);
+      System.out.println(element.getCSV());
+    }
   }
 }

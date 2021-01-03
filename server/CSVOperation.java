@@ -34,9 +34,9 @@ public class CSVOperation {
 
       String value1 = "";
       String value2 = "";
+      String value3 = "";
       boolean isStart = false;
       boolean isEnd = false;
-      int count = 0;
 
       String line = "";
       while ((line = buffer.readLine()) != null) {
@@ -48,11 +48,11 @@ public class CSVOperation {
 
         value1 = lineData[0];
         value2 = lineData[1];
-        isStart = Boolean.valueOf(lineData[2]);
-        isEnd = Boolean.valueOf(lineData[3]);
-        count = Integer.parseInt(lineData[4]);
+        value3 = lineData[2];
+        isStart = Boolean.valueOf(lineData[3]);
+        isEnd = Boolean.valueOf(lineData[4]);
 
-        text.add(new MarkovElement(value1, value2, isStart, isEnd, count));
+        text.add(new MarkovElement(value1, value2, value3, isStart, isEnd));
       }
 
       buffer.close();
