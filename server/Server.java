@@ -32,9 +32,13 @@ public class Server {
         } else if (matcher.group("command").equals("train")) {
           // Add new training data.
           String useText = matcher.group("text");
-          System.out.println(String.format("Train text: %s", useText));
-          chain.addElement(useText);
-          connectOperation.postText("Succeeded.");
+          if (useText == null) {
+            connectOperation.postText("Requires arguments. Example: /train 本日は晴天なり");
+          } else {
+            System.out.println(String.format("Train text: %s", useText));
+            chain.addElement(useText);
+            connectOperation.postText("Succeeded.");
+          }
         } else if (matcher.group("command").equals("generate")) {
           // Run Markov algorithm.
           connectOperation.postText(chain.generate());
