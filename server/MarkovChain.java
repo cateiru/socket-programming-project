@@ -27,7 +27,6 @@ public class MarkovChain {
     this.alreadyExists.add(text);
 
     List<String> formattedText = analysis.analysis(text);
-    System.out.println(formattedText);
 
     int start = 0;
     boolean isPhrase = false;
