@@ -92,12 +92,21 @@ public class MarkovChain {
     return text;
   }
 
+  /** Reset of train data. */
+  public void reset() {
+    this.element = new ArrayList<MarkovElement>(1);
+    this.alreadyExists = new ArrayList<String>(1);
+  }
+
   /**
    * Generate sentences using recursion.
    *
    * @param useTexts Usable objects.
    */
   private String recursionSentenceGeneration(List<MarkovElement> useTexts) {
+    if (useTexts.size() == 0) {
+      return "";
+    }
     int useIndex = random.nextInt(useTexts.size());
     MarkovElement useText = useTexts.get(useIndex);
     List<MarkovElement> nextElement = new ArrayList<MarkovElement>(1);

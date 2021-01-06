@@ -2,24 +2,25 @@ import java.io.*;
 import java.net.*;
 
 /**
- * Socket communication of server.
+ * Socket communication of client.
  *
  * @author Yuto Watanabe
  */
 public class Connect {
   private Socket socket = null;
-  private ServerSocket serverSocket = null;
   private int port;
   private BufferedReader in = null;
   private PrintWriter out = null;
+  private String address;
 
   /**
    * constructor to establish a connection.
    *
    * @param port Port number.
    */
-  public Connect(int port) {
+  public Connect(int port, String address) {
     this.port = port;
+    this.address = address;
     this.createSocket();
 
     this.in = inObj();
@@ -29,8 +30,8 @@ public class Connect {
   /** Create socket. */
   private void createSocket() {
     try {
-      this.serverSocket = new ServerSocket(this.port);
-      this.socket = this.serverSocket.accept();
+      this.socket = new Socket(address, this.port);
+      System.out.printf("Connect to %s\n", this.socket.getRemoteSocketAddress());
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -99,7 +100,6 @@ public class Connect {
       this.in.close();
       this.out.close();
       this.socket.close();
-      this.serverSocket.close();
     } catch (IOException error) {
       this.close();
     }
