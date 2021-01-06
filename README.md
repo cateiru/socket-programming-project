@@ -2,6 +2,10 @@
 Socket Programming Project
 </h1>
 
+<p align="center">
+<img src="assets/sample.png">
+</p>
+
 ## TL;DR
 
 コマンド入力形式のマルコフ連鎖プログラム。
