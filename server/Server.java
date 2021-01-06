@@ -27,8 +27,9 @@ public class Server {
 
         if (matcher.group("command").equals("end")) {
           // End server.
-          connectOperation.postText("");
+          connectOperation.postText("Close server...");
           break;
+
         } else if (matcher.group("command").equals("train")) {
           // Add new training data.
           String useText = matcher.group("text");
@@ -39,9 +40,11 @@ public class Server {
             chain.addElement(useText);
             connectOperation.postText("Succeeded.");
           }
+
         } else if (matcher.group("command").equals("generate")) {
           // Run Markov algorithm.
           connectOperation.postText(chain.generate());
+
         } else if (matcher.group("command").equals("reset")) {
           // reset data.
           chain.reset();
