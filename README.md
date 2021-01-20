@@ -12,6 +12,8 @@ Socket Programming Project
 
 形態素解析→マルコフ連鎖でそれとなくいい感じの文章を返します。
 
+[解説資料](https://www.slideshare.net/YutoWatanabe2/ss-241600326?qid=1d40f09a-31e3-4bb5-8a72-ef5cd3c04669&v=&b=&from_search=1)
+
 ## Build
 
 - 形態素解析のパッケージ**Igo**を使用しています。以下リンクから0.4.5のバージョンをダウンロードして[server/libs](server/libs)に`.jar`のまま保存してください。
